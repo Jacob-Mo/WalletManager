@@ -1,1 +1,1 @@
-# WalletManager
+WalletManager is a Flask-based backend API designed to simplify the management of multi-chain wallets. Leveraging Flask for the web framework and SQLAlchemy for object-relational mapping, this project enables users to create wallets, fetch balances, and interact seamlessly with various blockchain networks. It serves as a robust platform for developers seeking to integrate wallet management functionalities into their applications.
