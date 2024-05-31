@@ -1,1 +1,3 @@
-WalletManager is a Flask-based backend API designed to simplify the management of multi-chain wallets. Leveraging Flask for the web framework and SQLAlchemy for object-relational mapping, this project enables users to create wallets, fetch balances, and interact seamlessly with various blockchain networks. It serves as a robust platform for developers seeking to integrate wallet management functionalities into their applications.
+### Wallet Manager
+
+The Wallet Manager is a web application designed to help users manage cryptocurrency wallets across multiple blockchain networks. It features a backend API built with Flask, a smart contract written in Solidity, and a frontend created with React and TypeScript. The application allows users to create wallets, fetch wallet balances, and perform transactions on various blockchain networks.
