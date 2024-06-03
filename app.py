@@ -21,17 +21,27 @@ class Wallet(db.Model):
             'balance': self.balance
         }
 
+def create_new_wallet(wallet_address, balance=0):
+    new_wallet = Wallet(wallet_address=wallet_address, balance=balance)
+    db.session.add(new_wallet)
+    db.session.commit()
+    return new_wallet
+
+def find_wallet_by_address(wallet_address):
+    return Wallet.query.filter_by(wallet_address=wallet_address).first()
+
 @app.route('/api/wallet', methods=['POST'])
 def create_wallet():
     data = request.get_json()
-    new_wallet = Wallet(wallet_address=data['wallet_address'], balance=0)
-    db.session.add(new_wallet)
-    db.session.commit()
-    return jsonify(new_wallet.to_dict()), 201
+    try:
+        new_wallet = create_new_wallet(data['wallet_address'])
+        return jsonify(new_wallet.to_dict()), 201
+    except Exception as e:
+        return jsonify({"message": f"Error creating wallet: {str(e)}"}), 400
 
 @app.route('/api/wallet/<wallet_address>', methods=['GET'])
 def get_wallet(wallet_address):
-    wallet = Wallet.query.filter_by(wallet_address=wallet_address).first()
+    wallet = find_wallet_by_address(wallet_address)
     if wallet:
         return jsonify(wallet.to_dict()), 200
     else:
@@ -47,5 +57,5 @@ def interact_with_blockchain():
     return jsonify(response), 200
 
 if __name__ == '__main__':
-    db.create_all()
+    db.create_vall()
     app.run(debug=True)
