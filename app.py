@@ -57,5 +57,5 @@ def interact_with_blockchain():
     return jsonify(response), 200
 
 if __name__ == '__main__':
-    db.create_vall()
+    db.create_all()
     app.run(debug=True)
