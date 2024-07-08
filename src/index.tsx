@@ -1,59 +1,60 @@
-// index.tsx
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { WalletProvider } from './contexts/WalletContext';
+import { WalletContextProvider } from './contexts/WalletContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <WalletProvider>
+    <WalletContextProvider>
       <App />
-    </WalletProvider>
+    </WalletContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
 ```
-
 ```tsx
-// contexts/WalletContext.tsx
-
 import React, { createContext, useContext, ReactNode, useState } from 'react';
+
+interface Transaction {
+  id: string;
+  amount: number;
+  description: string;
+}
 
 interface Wallet {
   balance: number;
-  transactions: Array<{ id: string; amount: number; description: string }>;
+  transactions: Transaction[];
 }
 
-interface WalletContextType {
-  wallet: Wallet;
-  addTransaction: (transaction: { id: string; amount: number; description: string }) => void;
+interface WalletContextInterface {
+  currentWallet: Wallet;
+  appendTransaction: (transaction: Transaction) => void;
 }
 
-const WalletContext = createContext<WalletContextType | undefined>(undefined);
+const WalletContext = createContext<WalletContextInterface | undefined>(undefined);
 
-export function WalletProvider({ children }: { children: ReactNode }) {
-  const [wallet, setWallet] = useState<Wallet>({ balance: 0, transactions: [] });
+export function WalletContextProvider({ children }: { children: ReactNode }) {
+  const [currentWallet, setCurrentWallet] = useState<Wallet>({ balance: 0, transactions: [] });
 
-  const addTransaction = (transaction: { id: string; amount: number; description: string }) => {
-    setWallet((currentWallet) => {
-      const newBalance = currentWallet.balance + transaction.amount;
-      const newTransactions = [...currentWallet.transactions, transaction];
-      return { balance: newBalance, transactions: newTransactions };
+  const appendTransaction = (newTransaction: Transaction) => {
+    setCurrentWallet((prevWallet) => {
+      const updatedBalance = prevWallet.balance + newTransaction.amount;
+      const updatedTransactions = [...prevWallet.transactions, newValidationTest];
+      return { balance: updatedBalance, transactions: updatedTransactions };
     });
   };
 
   return (
-    <WalletContext.Provider value={{ wallet, addTransaction }}>
+    <WalletContext.Provider value={{ currentWallet, appendTransaction }}>
       {children}
     </WalletContext.Provider>
   );
 }
 
-export function useWallet() {
+export function useWalletContext() {
   const context = useContext(WalletContext);
   if (context === undefined) {
-    throw new Error('useWallet must be used within a WalletProvider');
+    throw new Error('useWalletContext must be used within a WalletContextProvider');
   }
   return context;
 }
