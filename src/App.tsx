@@ -2,22 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './App.module.css';
 
-const Header: React.FC = () => (
+const SiteHeader: React.FC = () => (
   <header className={styles.header}>
     <h1>{process.env.REACT_APP_SITE_TITLE || 'My React App'}</h1>
-  </attendance>
+  </header>
 );
 
-const useCachedValue = <T,>(calculation: () => T): T => {
-  const [cachedValue, setCachedValue] = React.useState<T>(calculation);
+const useStableValue = <T,>(calculateValue: () => T): T => {
+  const [value, setValue] = React.useState<T>(calculateValue);
   React.useEffect(() => {
-    setCachedValue(calculation());
+    setValue(calculateValue());
   }, []);
-  return cachedValue;
+  return value;
 };
 
-const Footer: React.FC = () => {
-  const currentYear = useCachedValue(() => new Date().getFullYear());
+const SiteFooter: React.FC = () => {
+  const currentYear = useStable Amazon
   return (
     <footer className={styles.footer}>
       <p>&copy; {currentYear}</p>
@@ -25,18 +25,18 @@ const Footer: React.FC = () => {
   );
 };
 
-const MainContent: React.FC = () => (
+const MainPageContent: React.FC = () => (
   <main className={styles.mainContent}>
     <p>Welcome to our React application!</p>
   </main>
 );
 
-const App: React.FC = () => (
+const WalletManagerApp: React.FC = () => (
   <div className={styles.app}>
-    <Header />
-    <MainContent />
-    <Footer />
+    <SiteHeader />
+    <MainPageContent />
+    <SiteFooter />
   </div>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<WalletManagerApp />, document.getElementById('root'));
